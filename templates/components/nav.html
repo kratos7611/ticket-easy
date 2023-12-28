@@ -1,0 +1,106 @@
+{% load static %}
+
+{% block header %}
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+{% endblock %}
+
+<!-- Header Start-->
+<header class="header">
+    <div class="header-inner">
+        <nav class="navbar navbar-expand-lg bg-barren barren-head navbar fixed-top justify-content-sm-start pt-0 pb-0">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+						<span class="navbar-toggler-icon">
+							<i class="fa-solid fa-bars"></i>
+						</span>
+                </button>
+                <a class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto" href="index.html">
+                    <div class="res-main-logo">
+                        <img src="{% static 'images/logo-icon.svg' %}" alt="">
+                    </div>
+                    <div class="main-logo" id="logo">
+                        <img src="{% static 'images/logo.svg' %}" alt="">
+                        <img class="logo-inverse" src="{% static 'images/dark-logo.svg' %}" alt="">
+                    </div>
+                </a>
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                     aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <div class="offcanvas-logo" id="offcanvasNavbarLabel">
+                            <img src="{% static 'images/logo-icon.svg' %}" alt="">
+                        </div>
+                        <button type="button" class="close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="offcanvas-top-area">
+                            <div class="create-bg">
+                                <a href="create.html" class="offcanvas-create-btn">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>Create Event</span>
+                                </a>
+                            </div>
+                        </div>
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe_5">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" role="button">
+                                    Explore Events
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pricing.html">Pricing</a>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Help
+                                </a>
+                                <ul class="dropdown-menu dropdown-submenu">
+                                    <li><a class="dropdown-item" href="faq.html">FAQ</a></li>
+                                    <li><a class="dropdown-item" href="contact_us.html">Contact Us</a></li>
+                                </ul>
+                            </li>
+                            <ul>
+                    </div>
+                </div>
+                <div class="right-header order-2">
+                    <ul class="align-self-stretch">
+                        <li>
+                            <div class="night_mode_switch__btn">
+                                <div id="night-mode" class="fas fa-moon fa-sun"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="overlay"></div>
+    </div>
+</header>
+<!-- Header End-->
+
+{% block script %}
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/OwlCarousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'vendor/mixitup/dist/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/night-mode.js' %}"></script>
+
+    <script>
+        var containerEl = document.querySelector('[data-ref~="event-filter-content"]');
+
+        var mixer = mixitup(containerEl, {
+            selectors: {
+                target: '[data-ref~="mixitup-target"]'
+            }
+        });
+    </script>
+{% endblock %}
