@@ -1,6 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, SignInForm
+from django.urls import reverse_lazy
+
+from .forms import SignUpForm, SignInForm, CustomPasswordResetForm, ChangePasswordForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 
@@ -71,3 +74,17 @@ def signin(request):
 
     context = {'form': form}
     return render(request, 'components/sign_in.html', context)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'components/forget_password.html'
+    email_template_name = 'components/password_reset_email.html'
+    subject_template_name = 'components/password_reset_subject.txt'
+    success_url = reverse_lazy('user:password_reset_done')
+    form_class = CustomPasswordResetForm
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'components/change_password.html'
+    success_url = reverse_lazy('user:password_reset_complete')
+    form_class = ChangePasswordForm

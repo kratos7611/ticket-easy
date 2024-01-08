@@ -7,9 +7,12 @@
     <div class="form-wrapper">
         <div class="app-form">
             <div class="app-form-sidebar">
-                {#                    TODO: update logo#}
+            {#                    TODO: update logo#}
                 <div class="sidebar-sign-logo">
-                    <img src="{% static 'images/sign-logo.svg' %}" alt="">
+                    <a href="{% url 'user:index' %}">
+                        {#                    TODO: update logo#}
+                        <img src="{% static 'images/sign-logo.svg' %}" alt="">
+                    </a>
                 </div>
                 <div class="sign_sidebar_text">
                     <h1>The Easiest Way to Create Events and Sell More Tickets Online</h1>
@@ -59,9 +62,9 @@
                                     </div>
                                 </form>
                                 <div class="agree-text">
-                                    By clicking "Sign up", you agree to Easy Ticket <a href="#">Terms & Conditions</a>
+                                    By clicking "Sign up", you agree to Easy Ticket Terms & Conditions
                                     and
-                                    have read the <a href="#">Privacy Policy</a>.
+                                    have read the Privacy Policy.
                                 </div>
                             </div>
                         </div>

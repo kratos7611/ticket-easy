@@ -162,3 +162,19 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# # Set the email backend to use SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info.ticketeasy@gmail.com'
+EMAIL_HOST_PASSWORD = 'dpsjblfsfyxoneub'
+
+# Default "from" address for emails sent by Django
+DEFAULT_FROM_EMAIL = 'info.ticketeasy@gmail.com'
+# Email address used as the sender for error messages sent to the site administrators
+SERVER_EMAIL = 'info.ticketeasy@gmail.com'
+EMAIL_SUBJECT_PREFIX = '[TicketEasy] '
+EMAIL_TIMEOUT = 5
+DEFAULT_CHARSET = 'utf-8'
