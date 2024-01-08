@@ -1,0 +1,73 @@
+{% extends 'base_basic.html' %}
+{#{% url 'user:signup' as signup %}#}
+{% load static %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+    <div class="form-wrapper">
+        <div class="app-form">
+            <div class="app-form-sidebar">
+                <div class="sidebar-sign-logo">
+                    {#                    TODO: update logo#}
+                    <img src="{% static 'images/sign-logo.svg' %}" alt="">
+                </div>
+                <div class="sign_sidebar_text">
+                    <h1>The Easiest Way to Create Events and Sell More Tickets Online</h1>
+                </div>
+            </div>
+            <div class="app-form-content">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10 col-md-10">
+                            <div class="app-top-items">
+                                <a href="index.html">
+                                    <div class="sign-logo" id="logo">
+                                        <img src="images/logo.svg" alt="">
+                                        <img class="logo-inverse" src="images/dark-logo.svg" alt="">
+                                    </div>
+                                </a>
+                                <div class="app-top-right-link">
+                                    New to Easy Ticket?<a class="sidebar-register-link" href="{% url 'user:signup' %}">Sign
+                                    up</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-6 col-md-7">
+                            <div class="registration">
+                                <form method="post" action="{% url 'user:signin' %}">
+                                    {% csrf_token %}
+                                    <h2 class="registration-title">Sign in to Easy Ticket</h2>
+                                    <div class="form-group mt-5">
+                                        <label class="form-label">Your Email*</label>
+                                        {{ form.email }}
+                                    </div>
+                                    <div class="form-group mt-4">
+                                        <div class="field-password">
+                                            <label class="form-label">Password*</label>
+{#                                            <a class="forgot-pass-link" href="{% url 'user:forgot_password' %}">Forgot#}
+{#                                                Password?</a>#}
+                                            <a class="forgot-pass-link" href="#}">Forgot
+                                                Password?</a>
+                                        </div>
+                                        <div class="loc-group position-relative">
+                                            {{ form.password }}
+                                        </div>
+                                    </div>
+                                    <button class="main-btn btn-hover w-100 mt-4" type="submit">Sign In <i
+                                            class="fas fa-sign-in-alt ms-2"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright-footer">
+                    © 2024, Ticket Easy. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    {% include 'components/base_footer_script.html' %}
+{% endblock %}

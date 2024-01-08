@@ -1,5 +1,6 @@
 {% load static %}
-
+{% url 'user:index' as index %}
+{% url 'user:signin' as signin %}
 {% block header %}
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 {% endblock %}
@@ -15,7 +16,8 @@
 							<i class="fa-solid fa-bars"></i>
 						</span>
                 </button>
-                <a class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto" href="index.html">
+                <a class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto" href="{{ index }}">
+                    {#                    TODO: update logo#}
                     <div class="res-main-logo">
                         <img src="{% static 'images/logo-icon.svg' %}" alt="">
                     </div>
@@ -35,25 +37,15 @@
                         </button>
                     </div>
                     <div class="offcanvas-body">
-                        <div class="offcanvas-top-area">
-                            <div class="create-bg">
-                                <a href="create.html" class="offcanvas-create-btn">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span>Create Event</span>
-                                </a>
-                            </div>
-                        </div>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe_5">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                                <a class="nav-link {% if request.path == index %} active {% endif %}"
+                                   aria-current="page" href="{{ index }}">Home</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" role="button">
                                     Explore Events
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pricing.html">Pricing</a>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -66,7 +58,12 @@
                                     <li><a class="dropdown-item" href="contact_us.html">Contact Us</a></li>
                                 </ul>
                             </li>
-                            <ul>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ signin }}">Sign in</a>
+                            </li>
+
+                        </ul>
                     </div>
                 </div>
                 <div class="right-header order-2">
@@ -86,14 +83,7 @@
 <!-- Header End-->
 
 {% block script %}
-    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'vendor/OwlCarousel/owl.carousel.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
-    <script src="{% static 'vendor/mixitup/dist/mixitup.min.js' %}"></script>
-    <script src="{% static 'js/custom.js' %}"></script>
-    <script src="{% static 'js/night-mode.js' %}"></script>
-
+    {% include 'components/base_footer_script.html' %}
     <script>
         var containerEl = document.querySelector('[data-ref~="event-filter-content"]');
 
