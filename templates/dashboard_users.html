@@ -1,0 +1,91 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+    <!-- Body Start -->
+    <div class="wrapper wrapper-body">
+        <div class="dashboard-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-main-title">
+                            <h3><i class="fa-solid fa-user-group me-3"></i>All Users</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="conversion-setup">
+                            <div class="main-card mt-5">
+                                <div class="dashboard-wrap-content p-4">
+                                    <div class="">
+                                        <div class="nav custom2-tabs btn-group" role="tablist">
+                                            <button class="tab-link ms-0 active" data-bs-toggle="tab"
+                                                    data-bs-target="#overview-tab" type="button" role="tab"
+                                                    aria-controls="overview-tab" aria-selected="true">Overview
+                                            </button>
+                                        </div>
+                                        <div class="rs ms-auto mt_r4">
+                                            <form id="searchForm">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input class="form-control h_40" type="text" name="search"
+                                                               placeholder="Search by name,email" value="">
+                                                        <button type="submit" class="btn btn-success"><i
+                                                                class="uil uil-search"></i> Search
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="overview-tab" role="tabpanel">
+                                    <div class="table-card mt-4">
+                                        <div class="main-table">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Role</th>
+                                                        <th scope="col">Contact</th>
+                                                        <th scope="col">Gender</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>John Doe</td>
+                                                        <td>johndoe@example.com</td>
+                                                        <td>Account Owner</td>
+                                                        <td>9855241635</td>
+                                                        <td>Male</td>
+                                                        <td style="display: flex; justify-content: space-around;"><span
+                                                                class="action-btn"><i
+                                                                class="fa-solid fa-pencil-alt"></i></span> <span
+                                                                class="action-btn mr-1"><i
+                                                                class="fa-solid fa-trash-can"></i></span></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body End -->
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

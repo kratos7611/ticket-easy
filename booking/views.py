@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def dashboard_bookings(request):
+    context = {
+    }
+    return render(request, 'dashboard_bookings.html', context)

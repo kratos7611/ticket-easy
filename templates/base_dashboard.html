@@ -17,6 +17,7 @@
           rel="stylesheet">
     <link href="{% static 'vendor/unicons-2.0.1/css/unicons.css' %}" rel='stylesheet'>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/vertical-responsive-menu.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
     <link href="{% static 'css/night-mode.css' %}" rel="stylesheet">
     <link href="{% static 'css/pagination.css' %}" rel="stylesheet">
@@ -36,10 +37,12 @@
 </head>
 <body id="body">
 {% include 'components/message.html' %}
-{% include 'components/nav.html' %}
+{% include 'components/dashboard_nav.html' %}
+{% include 'components/sidebar_nav.html' %}
 {% block content %}
+
 {% endblock %}
-{% include 'components/footer.html' %}
+
 {% block script %}
 {% endblock %}
 </body>

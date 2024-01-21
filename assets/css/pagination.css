@@ -1,0 +1,30 @@
+.pagination {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  margin-top: 3vh;
+  gap: 5px;
+}
+
+.pagination-item {
+  padding: 0.4rem 0.6rem 0.4rem 0.6rem;
+  text-decoration: none;
+  background-color: white;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+  border: 1px solid #6ac045;
+}
+
+.pagination-item:hover{
+    cursor: pointer;
+    background-color: #6ac045;
+    color: white;
+}
+
+.pagination-item--active {
+  background-color: #6ac045;
+  color: white;
+}

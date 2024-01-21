@@ -4,6 +4,5 @@ from . import views
 app_name = 'booking'
 
 urlpatterns = [
-    # Define booking-related URL patterns here
-    # Add more patterns as needed
+    path("superadmin/bookings", views.dashboard_bookings, name='dashboard_bookings'),
 ]

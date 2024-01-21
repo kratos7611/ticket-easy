@@ -1,0 +1,20 @@
+{% load static %}
+{% if object.paginator.num_pages > 1 %}
+    <div class="pagination" data-aos="fade-up">
+        {% if object.has_previous %}
+            <a class="pagination-item previous" href="?page={{ object.previous_page_number }}&search={{ search }}">Previous</a>
+        {% endif %}
+        {% for page_number in object.adjusted_elided_pages %}
+            {% if page_number == object.paginator.ELLIPSIS %}
+                {{ page_number }}
+            {% else %}
+                <a class="pagination-item {% if page_number == object.number %}pagination-item--active{% endif %}"
+                   href="?page={{ page_number }}&search={{ search }}"
+                >{{ page_number }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if object.has_next %}
+            <a class="pagination-item" href="?page={{ object.next_page_number }}&search={{ search }}">Next</a>
+        {% endif %}
+    </div>
+{% endif %}

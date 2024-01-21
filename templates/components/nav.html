@@ -1,6 +1,7 @@
 {% load static %}
 {% url 'user:index' as index %}
 {% url 'user:signin' as signin %}
+{% url 'event:explore_events' as events %}
 {% block header %}
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 {% endblock %}
@@ -43,7 +44,7 @@
                                    aria-current="page" href="{{ index }}">Home</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="#" role="button">
+                                <a class="nav-link {% if request.path == events %} active {% endif %}" href="{{ events }}" role="button">
                                     Explore Events
                                 </a>
                             </li>
@@ -84,13 +85,4 @@
 
 {% block script %}
     {% include 'components/base_footer_script.html' %}
-    <script>
-        var containerEl = document.querySelector('[data-ref~="event-filter-content"]');
-
-        var mixer = mixitup(containerEl, {
-            selectors: {
-                target: '[data-ref~="mixitup-target"]'
-            }
-        });
-    </script>
 {% endblock %}

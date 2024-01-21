@@ -1,0 +1,112 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+    <!-- Body Start -->
+    <div class="wrapper wrapper-body">
+        <div class="dashboard-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-main-title">
+                            <h3><i class="fa-solid fa-chart-pie me-3"></i>Bookings</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-card mt-5">
+                            <div class="dashboard-wrap-content p-4">
+                                <div class="nav custom2-tabs btn-group" role="tablist">
+                                    <button class="tab-link ms-0 active" data-bs-toggle="tab"
+                                            data-bs-target="#orders-tab" type="button" role="tab"
+                                            aria-controls="orders-tab" aria-selected="true">Orders
+                                    </button>
+                                </div>
+                                <div class="d-md-flex flex-wrap align-items-center">
+                                    <div class="dashboard-date-wrap mt-4">
+                                        <form id="searchForm">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input class="form-control h_40" type="text" name="search"
+                                                           placeholder="Search by name" value="">
+                                                    <button type="submit" class="btn btn-success"><i
+                                                            class="uil uil-search"></i> Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-list">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="orders-tab" role="tabpanel">
+                                    <div class="table-card mt-4">
+                                        <div class="main-table">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Event Name</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">price(NPR)</th>
+                                                        <th scope="col">Quantity</th>
+                                                        <th scope="col">Total(NPR)</th>
+                                                        <th scope="col">Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>5291</td>
+                                                        <td>Larry Paige</td>
+                                                        <td>Astrology on sunday event</td>
+                                                        <td>04/22/2022</td>
+                                                        <td>20</td>
+                                                        <td>2</td>
+                                                        <td>40</td>
+                                                        <td><span class="status-circle red-circle"></span>Canceled</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5290</td>
+                                                        <td>John Cena</td>
+                                                        <td><a href="#" target="_blank">Melbourne plant sale</a></td>
+                                                        <td>04/22/2022</td>
+                                                        <td>20</td>
+                                                        <td>2</td>
+                                                        <td>40</td>
+                                                        <td><span class="status-circle green-circle"></span>Completed
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5289</td>
+                                                        <td>Gleen Smith</td>
+                                                        <td><a href="#" target="_blank">Testing Events</a></td>
+                                                        <td>04/21/2022</td>
+                                                        <td>20</td>
+                                                        <td>2</td>
+                                                        <td>40</td>
+                                                        <td><span class="status-circle blue-circle"></span>Pending</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body End -->
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

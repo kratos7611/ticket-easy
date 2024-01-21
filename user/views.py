@@ -4,16 +4,26 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .forms import SignUpForm, SignInForm, CustomPasswordResetForm, ChangePasswordForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth import authenticate, login
+from event.models import Event
 
 User = get_user_model()
 
 
 def index(request):
+    latest_events = Event.objects.order_by('-start_datetime')[:4]
+
     context = {
+        'latest_events': latest_events,
     }
     return render(request, 'index.html', context)
+
+
+def dashboard_users(request):
+    context = {
+    }
+    return render(request, 'dashboard_users.html', context)
 
 
 def signup(request):
@@ -64,7 +74,8 @@ def signin(request):
                 # Log the user in
                 login(request, user)
                 # Redirect to a success page.
-                return redirect('user:index')  # Replace 'index' with the desired URL after successful login
+                # if super admin else index with more menu
+                return redirect('event:dashboard')
             else:
                 # Return an 'invalid login' error message.
                 messages.error(request, 'Invalid email or password.')
@@ -88,3 +99,8 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'components/change_password.html'
     success_url = reverse_lazy('user:password_reset_complete')
     form_class = ChangePasswordForm
+
+
+def signout(request):
+    logout(request)
+    return redirect('user:index')
