@@ -4,52 +4,51 @@
 
 {% endblock %}
 {% block content %}
-   	<div class="wrapper">
-		<div class="hero-banner">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-xl-8 col-lg-8 col-md-10">
-						<div class="hero-banner-content">
-							<h2>Discover Events For All The Things You Love</h2>
-							<div class="search-form main-form">
-								<div class="row g-3">
-									<div class="col-lg-5 col-md-12 w-100">
-										<form id="searchForm" class="d-md-flex justify-content-center w-100">
-											<div class="form-group">
-												<input type="text" class="form-control h_50 w-100" name="search" placeholder="Search by event name" value="{{ search_query }}">
-											</div>
-											<button type="submit" class="main-btn btn-hover w-35 ml-2">Search</button>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="explore-events p-80">
-			<div class="container">
-				<div class="row">
-					<div class="col-xl-12 col-lg-12 col-md-12">
-						<div class="event-filter-items">
-							<div class="featured-controls">
-								<div class="filter-tag">
-									<a href="explore_events_by_date.html" class="active">All</a>
-								</div>
-								<div class="row" data-ref="event-filter-content">
-									{% for event in events %}
+    <div class="wrapper">
+        <div class="hero-banner">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8 col-md-10">
+                        <div class="hero-banner-content">
+                            <h2>Discover Events For All The Things You Love</h2>
+                            <div class="search-form main-form">
+                                <div class="row g-3">
+                                    <div class="col-lg-5 col-md-12 w-100">
+                                        <form id="searchForm" class="d-md-flex justify-content-center w-100">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control h_50 w-100" name="search"
+                                                       placeholder="Search by event name" value="{{ search_query }}">
+                                            </div>
+                                            <button type="submit" class="main-btn btn-hover w-35 ml-2">Search</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="explore-events p-80">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                        <div class="event-filter-items">
+                            <div class="featured-controls">
+                                <div class="filter-tag">
+                                    <a href="explore_events_by_date.html" class="active">All</a>
+                                </div>
+                                <div class="row" data-ref="event-filter-content">
+                                    {% for event in events %}
                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-ref="mixitup-target">
                                             <div class="main-card mt-4">
                                                 <div class="event-thumbnail">
-                                                    {#                                                <a href="{% url 'event_detail' event.id %}" class="thumbnail-img">#}
-                                                    <a href="#" class="thumbnail-img">
+                                                    <a href="{% url 'event:event_details' event_id=event.id %}" class="thumbnail-img">
                                                         <img src="{{ event.thumbnail_image.url }}"
                                                              alt="{{ event.title }}">
                                                     </a>
                                                 </div>
                                                 <div class="event-content">
-                                                    {#                                                <a href="{% url 'event_detail' event.id %}"#}
                                                     <a href="#" class="event-title" style="margin-bottom: -1.8vh">{{ event.title }}</a>
                                                     {% if event.address %}
                                                         <span class="badge bg-primary">Venue</span>
@@ -73,16 +72,16 @@
                                             </div>
                                         </div>
                                     {% endfor %}
-								</div>
+                                </div>
                                 {% include 'components/pagination.html' with object=events %}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Body End-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body End-->
 {% endblock %}
 
 {% block script %}

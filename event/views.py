@@ -1,5 +1,6 @@
 import os
 import uuid
+import random
 
 from django.conf import settings
 from django.contrib import messages
@@ -182,3 +183,19 @@ def delete_event(request, event_id):
     event.delete()
     messages.success(request, 'Event deleted successfully.')
     return redirect('event:dashboard_events')
+
+
+def event_details(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    # Get the IDs of all events excluding the current event
+    all_event_ids_except_current = Event.objects.exclude(id=event.id).values_list('id', flat=True)
+
+    # Choose 8 random event IDs
+    random_event_ids = random.sample(list(all_event_ids_except_current), min(8, len(all_event_ids_except_current)))
+
+    # Retrieve the corresponding events
+    random_events = Event.objects.filter(id__in=random_event_ids)
+
+    context = {'event': event, 'events': random_events}
+    return render(request, 'event_details.html', context)

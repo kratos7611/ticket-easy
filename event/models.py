@@ -21,11 +21,16 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+    def day(self):
+        return self.start_datetime.day
 
-@property
-def status(self):
-    now = timezone.localtime(timezone.now())
-    if now < self.start_datetime and self.available_ticket_quantity() > 0 and self.issued_ticket_quantity > 0:
-        return 'Active'
-    else:
-        return 'Deactivated'
+    def month(self):
+        return self.start_datetime.strftime('%b')
+
+    @property
+    def status(self):
+        now = timezone.localtime(timezone.now())
+        if now < self.end_datetime and self.available_ticket_quantity() > 0 and self.issued_ticket_quantity > 0:
+            return 'Active'
+        else:
+            return 'Deactivated'

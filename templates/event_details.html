@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    <link href="{% static 'vendor/OwlCarousel/assets/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/OwlCarousel/assets/owl.theme.default.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <!-- Body Start-->
+    <div class="wrapper">
+        <div class="breadcrumb-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-10">
+                        <div class="barren-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url 'user:index' %}">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'event:explore_events' %}">Explore
+                                        Events</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Event Detail View</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="event-dt-block p-80">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                        <div class="event-top-dts">
+                            <div class="event-top-date">
+                                <span class="event-month">{{ event.month }}</span>
+                                <span class="event-date">{{ event.day }}</span>
+                            </div>
+                            <div class="event-top-dt">
+                                <h3 class="event-main-title">{{ event.title }}</h3>
+                                <div class="event-top-info-status">
+                                    {% if event.link %}
+                                        <span class="event-type-name"><i class="fa-solid fa-video"></i>Online</span>
+                                    {% endif %}
+                                    {% if event.address %}
+                                        <span class="event-type-name"><i
+                                                class="fa-solid fa-landmark-flag"></i> Venue</span>
+                                    {% endif %}
+                                    <span class="event-type-name details-hr">Starts on <span
+                                            class="ev-event-date">{{ event.start_datetime }}</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-7 col-md-12">
+                        <div class="main-event-dt">
+                            <div class="event-img">
+                                <img src="{{ event.thumbnail_image.url }}" alt="{{ event.title }}"
+                                     style="height:50vh; width: auto">
+                            </div>
+
+                            <div class="main-event-content">
+                                <h4>About This Event</h4>
+                                <p>{{ event.about }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-12">
+                        <div class="main-card event-right-dt">
+                            <div class="bp-title">
+                                <h4>Event Details</h4>
+                            </div>
+                            <div class="time-left">
+                                <div class="countdown-item" id="eventStatus">
+                                    <span class="event-month" id="eventStart"></span>
+                                </div>
+                                <div class="countdown" id="eventCountdown">
+                                    <div class="countdown-item">
+                                        <span id="day"></span>days
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span id="hour"></span>Hours
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span id="minute"></span>Minutes
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span id="second"></span>Seconds
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="event-dt-right-group mt-5">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div class="event-dt-right-content">
+                                    <h4>Status</h4>
+                                    <h5>{{ event.status }}</h5>
+                                </div>
+                            </div>
+                            <div class="event-dt-right-group">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-calendar-day"></i>
+                                </div>
+                                <div class="event-dt-right-content">
+                                    <h4>Start Date and Time</h4>
+                                    <h5 id="event-start-datetime">{{ event.start_datetime }}</h5>
+                                </div>
+                            </div>
+                            <div class="event-dt-right-group">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-calendar-day"></i>
+                                </div>
+
+                                <div class="event-dt-right-content">
+                                    <h4>End Date and Time</h4>
+                                    <h5 id="event-end-datetime">{{ event.end_datetime }}</h5>
+                                </div>
+                            </div>
+
+                            <div class="event-dt-right-group">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-landmark-flag"></i>
+                                </div>
+                                <div class="event-dt-right-content">
+                                    <h4>Location</h4>
+                                    <h5 class="mb-0">{{ event.address }}</h5>
+                                </div>
+                            </div>
+                            <div class="event-dt-right-group">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-money-check-dollar"></i>
+                                </div>
+                                <div class="event-dt-right-content">
+                                    <h4>Price/Ticket</h4>
+                                    <h5 class="mb-0">NPR {{ event.price_per_ticket }}</h5>
+                                </div>
+                            </div>
+                            <div class="event-dt-right-group">
+                                <div class="event-dt-right-icon">
+                                    <i class="fa-solid fa-ticket"></i>
+                                </div>
+                                <div class="event-dt-right-content">
+                                    <h4>Available Tickets</h4>
+                                    <h5 class="mb-0">{{ event.available_ticket_quantity }}</h5>
+                                </div>
+                            </div>
+                            <div class="select-tickets-block">
+                                <h6>Select Tickets</h6>
+                                <div class="select-ticket-action">
+                                    <div class="ticket-price">NPR 50.00</div>
+                                    <div class="quantity">
+                                        <div class="counter">
+                                            <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                                            <input type="text" value="0">
+                                            <span class="up" onClick='increaseCount(event, this)'>+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Please select less or equals to available tickets.</p>
+                                <div class="xtotel-tickets-count">
+                                    <div class="x-title">10x Ticket(s)</div>
+                                    <h4>NPR <span>500.00</span></h4>
+                                </div>
+                            </div>
+                            <div class="booking-btn">
+                                <a href="checkout.html" class="main-btn btn-hover w-100">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                        <div class="more-events">
+                            <div class="main-title position-relative">
+                                <h3>More Events</h3>
+                                <a href="{% url 'event:explore_events' %}" class="view-all-link">Browse All<i
+                                        class="fa-solid fa-right-long ms-2"></i></a>
+                            </div>
+                            <div class="owl-carousel moreEvents-slider owl-theme">
+                                {% for latest_event in events %}
+                                    <div class="item">
+                                        <div class="main-card mt-4">
+                                            <div class="event-thumbnail">
+                                                <a href="{% url 'event:event_details' event_id=latest_event.id %}"
+                                                   class="thumbnail-img">
+                                                    <img src="{{ latest_event.thumbnail_image.url }}"
+                                                         alt="{{ latest_event.title }}">
+                                                </a>
+                                            </div>
+                                            <div class="event-content">
+                                                <a href="#" class="event-title"
+                                                   style="margin-bottom: -1.8vh">{{ event.title }}</a>
+                                                {% if latest_event.address %}
+                                                    <span class="badge bg-primary">Venue</span>
+                                                {% endif %}
+
+                                                {% if latest_event.link %}
+                                                    <span class="badge bg-success">Online</span>
+                                                {% endif %}
+                                                <div class="duration-price-remaining" style="margin-top: 1vh;">
+                                                    <span class="duration-price">NPR {{ latest_event.price_per_ticket }}*</span>
+                                                </div>
+                                            </div>
+                                            <div class="event-footer">
+                                                <div class="event-timing">
+                                                    <div class="publish-date">
+                                                        <span><i
+                                                                class="fa-solid fa-calendar-day me-2"></i> Start at: {{ latest_event.start_datetime }}</span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body End-->
+{% endblock %}
+
+{% block script %}
+    <!-- Include moment.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="{% static 'vendor/OwlCarousel/owl.carousel.js' %}"></script>
+    <script>
+        /*--- QTY JS ---*/
+        function increaseCount(a, b) {
+            var input = b.previousElementSibling;
+            var value = parseInt(input.value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            input.value = value;
+        }
+
+        function decreaseCount(a, b) {
+            var input = b.nextElementSibling;
+            var value = parseInt(input.value, 10);
+            if (value > 1) {
+                value = isNaN(value) ? 0 : value;
+                value--;
+                input.value = value;
+            }
+        }
+
+
+        // === Timer === //
+        (function () {
+            const second = 1000,
+                minute = second * 60,
+                hour = minute * 60,
+                day = hour * 24;
+
+            // Retrieve the start and end datetime from the HTML
+            const eventStartDatetimeString = document.getElementById("event-start-datetime").innerText;
+            const eventEndDatetimeString = document.getElementById("event-end-datetime").innerText;
+
+            // Use moment.js to parse the date strings
+            const eventStartDatetime = moment(eventStartDatetimeString, 'MMM. DD, YYYY, h:mm a').valueOf();
+            const eventEndDatetime = moment(eventEndDatetimeString, 'MMM. DD, YYYY, h:mm a').valueOf();
+            let x;
+            const updateCountdown = function () {
+                const now = new Date().getTime();
+
+                // Check if the end date has passed
+                if (now > eventEndDatetime) {
+                    document.getElementById("eventStart").innerText = "Event Ended";
+                    document.getElementById("eventStatus").style.backgroundColor = "red";
+                    document.getElementById("eventStart").style.backgroundColor = "red";
+                    document.getElementById("eventCountdown").style.display = "none";
+                    clearInterval(x);
+                } else if (now > eventStartDatetime) {
+                    document.getElementById("eventStart").innerText = "Event Started";
+                    document.getElementById("eventCountdown").style.display = "none";
+                    clearInterval(x);
+                } else {
+                    document.getElementById("eventStatus").style.display = "none";
+                    document.getElementById("day").innerText = Math.floor((eventStartDatetime - now) / day);
+                    document.getElementById("hour").innerText = Math.floor((eventStartDatetime - now) % day / hour);
+                    document.getElementById("minute").innerText = Math.floor((eventStartDatetime - now) % hour / minute);
+                    document.getElementById("second").innerText = Math.floor((eventStartDatetime - now) % minute / second);
+                }
+            };
+
+            updateCountdown(); // Call it once immediately to set the initial values
+
+            x = setInterval(updateCountdown, 1000); // Update every 1 second
+        }());
+
+
+        // More Events Slider
+        $('.moreEvents-slider').owlCarousel({
+            items: 7,
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: false,
+            navText: ["<i class='uil uil-angle-left'></i>", "<i class='uil uil-angle-right'></i>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                800: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                },
+                1200: {
+                    items: 4
+                },
+                1400: {
+                    items: 4
+                }
+            }
+        })
+    </script>
+{% endblock %}

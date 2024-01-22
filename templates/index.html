@@ -39,14 +39,14 @@
                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-ref="mixitup-target">
                                             <div class="main-card mt-4">
                                                 <div class="event-thumbnail">
-                                                    {#                                                <a href="{% url 'event_detail' event.id %}" class="thumbnail-img">#}
-                                                    <a href="#" class="thumbnail-img">
+                                                    <a href="{% url 'event:event_details' event_id=event.id %}"
+                                                       class="thumbnail-img">
+
                                                         <img src="{{ event.thumbnail_image.url }}"
                                                              alt="{{ event.title }}">
                                                     </a>
                                                 </div>
                                                 <div class="event-content">
-                                                    {#                                                <a href="{% url 'event_detail' event.id %}"#}
                                                     <a href="#" class="event-title" style="margin-bottom: -1.8vh">{{ event.title }}</a>
                                                     {% if event.address %}
                                                         <span class="badge bg-primary">Venue</span>
@@ -73,7 +73,8 @@
                                 </div>
 
                                 <div class="browse-btn">
-                                    <a href="{% url 'event:explore_events' %}" class="main-btn btn-hover ">Browse All</a>
+                                    <a href="{% url 'event:explore_events' %}" class="main-btn btn-hover ">Browse
+                                        All</a>
                                 </div>
                             </div>
                         </div>

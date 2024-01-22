@@ -4,6 +4,7 @@
 {% url 'user:signout' as signout %}
 {% url 'event:dashboard_events' as events %}
 {% url 'event:create_event' as create_event %}
+{% url 'event:explore_events' as explore_events %}
 {% block header %}
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 {% endblock %}
@@ -63,7 +64,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="explore_events.html">
+                                <a class="nav-link" href="{{ explore_events }}">
                                     <i class="fa-solid fa-compass me-2"></i>Explore Events
                                 </a>
                             </li>
@@ -102,11 +103,6 @@
                                     <a href="{{ signout }}" class="link-item">Sign Out</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li>
-                            <div class="night_mode_switch__btn">
-                                <div id="night-mode" class="fas fa-moon fa-sun"></div>
-                            </div>
                         </li>
                     </ul>
                 </div>
