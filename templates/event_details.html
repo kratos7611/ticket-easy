@@ -146,7 +146,7 @@
                             <div class="select-tickets-block">
                                 <h6>Select Tickets</h6>
                                 <div class="select-ticket-action">
-                                    <div class="ticket-price">NPR 50.00</div>
+                                    <div class="ticket-price">NPR {{ event.price_per_ticket }}</div>
                                     <div class="quantity">
                                         <div class="counter">
                                             <span class="down" onClick='decreaseCount(event, this)'>-</span>
@@ -157,12 +157,13 @@
                                 </div>
                                 <p>Please select less or equals to available tickets.</p>
                                 <div class="xtotel-tickets-count">
-                                    <div class="x-title">10x Ticket(s)</div>
-                                    <h4>NPR <span>500.00</span></h4>
+                                    <div class="x-title">0 x Ticket(s)</div>
+                                    <h4>NPR <span>00.00</span></h4>
                                 </div>
                             </div>
                             <div class="booking-btn">
-                                <a href="checkout.html" class="main-btn btn-hover w-100">Book Now</a>
+                                <button onclick="bookNow()" id="book-now" class="main-btn btn-hover w-100">Book Now
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -221,6 +222,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Include moment.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="{% static 'vendor/OwlCarousel/owl.carousel.js' %}"></script>
@@ -232,6 +234,9 @@
             value = isNaN(value) ? 0 : value;
             value++;
             input.value = value;
+
+            // Calling the magic function to update ticket information
+            updateTicketInfo();
         }
 
         function decreaseCount(a, b) {
@@ -241,9 +246,117 @@
                 value = isNaN(value) ? 0 : value;
                 value--;
                 input.value = value;
+
+                // More magic! Updating ticket information again
+                updateTicketInfo();
             }
         }
 
+        function updateTicketInfo() {
+            // Fetching the quantity and price elements
+            var quantityElement = document.querySelector('.quantity input');
+            var totalElement = document.querySelector('.xtotel-tickets-count .x-title');
+            var totalPriceElement = document.querySelector('.xtotel-tickets-count h4 span');
+            var pricePerTicketElement = document.querySelector('.ticket-price');
+
+            // Retrieving values
+            var quantity = parseInt(quantityElement.value, 10);
+            var pricePerTicket = parseFloat(pricePerTicketElement.innerText.split(' ')[1]); // Extracting the numeric value
+
+            // Updating the total quantity
+            totalElement.innerText = quantity + ' x Ticket(s)';
+
+            // Calculating and updating the total price
+            var totalPrice = quantity * pricePerTicket;
+            totalPriceElement.innerText = totalPrice.toFixed(2); // Displaying total price with two decimal places
+        }
+
+
+        function bookNow() {
+            // Fetch quantity and total price for the booking
+            var quantityElement = document.querySelector('.quantity input');
+            var quantity = parseInt(quantityElement.value, 10);
+
+            if (quantity <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Please select a valid quantity',
+                    customClass: {
+                        container: 'custom-text',
+                        confirmButton: 'sweet-btn',
+                    }
+                });
+                return; // Stop execution if quantity is invalid
+            }
+
+            var requestBody = JSON.stringify({
+                event_id: {{ event.id }},
+                quantity: quantity
+            })
+
+            // Send data to the server using fetch API
+            fetch('/book_now/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token
+                },
+                body: requestBody,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            customClass: {
+                                container: 'custom-text',
+                                confirmButton: 'sweet-btn',
+                            },
+                            didClose: () => {
+                                location.reload();
+                            }
+                        });
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.message,
+                            customClass: {
+                                container: 'custom-text',
+                                confirmButton: 'sweet-btn',
+                            }
+                        })
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: error,
+                        customClass: {
+                            container: 'custom-text',
+                            confirmButton: 'sweet-btn',
+                        }
+                    })
+                });
+        }
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
         // === Timer === //
         (function () {
@@ -269,6 +382,7 @@
                     document.getElementById("eventStatus").style.backgroundColor = "red";
                     document.getElementById("eventStart").style.backgroundColor = "red";
                     document.getElementById("eventCountdown").style.display = "none";
+                    document.getElementById("book-now").style.display = "none";
                     clearInterval(x);
                 } else if (now > eventStartDatetime) {
                     document.getElementById("eventStart").innerText = "Event Started";
