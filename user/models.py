@@ -18,6 +18,7 @@ class User(AbstractUser):
     middle_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    is_organizer = models.BooleanField(default=False)
 
     def get_full_name(self):
         if self.middle_name:

@@ -7,6 +7,7 @@ from .forms import SignUpForm, SignInForm, CustomPasswordResetForm, ChangePasswo
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth import authenticate, login
 from event.models import Event
+from ticketeasy.decorators import onauthenticated_user, path_checker
 
 User = get_user_model()
 
@@ -20,10 +21,17 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+@path_checker
 def dashboard_users(request):
     context = {
     }
     return render(request, 'dashboard_users.html', context)
+
+
+def unauthorized(request):
+    context = {
+    }
+    return render(request, 'components/unauthorized.html', context)
 
 
 def signup(request):
@@ -57,6 +65,7 @@ def signup(request):
     return render(request, 'components/sign_up.html', {'form': form})
 
 
+@onauthenticated_user
 def signin(request):
     if request.method == 'POST':
         # Create a form instance and populate it with data from the request:

@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
@@ -10,8 +11,11 @@ from barcode import EAN13
 from barcode.writer import ImageWriter
 from io import BytesIO
 from django.core.files import File
+from ticketeasy.decorators import onauthenticated_user, path_checker
 
 
+@login_required(login_url='user:signin')
+@path_checker
 def dashboard_bookings(request):
     search_query = request.GET.get('search', '')
 
@@ -43,56 +47,62 @@ def dashboard_bookings(request):
 def book_now(request):
     if request.method == 'POST':
         try:
-            # Retrieve data from the frontend
-            user = request.user
+            if request.user.is_authenticated:
+                if request.user.is_superuser or request.user.is_organizer:
+                    return JsonResponse({'success': False, 'message': 'Oops! Unauthorized action.'})
+                else:
+                    # Retrieve data from the frontend
+                    user = request.user
 
-            # Use request.body to get raw JSON data
-            data = json.loads(request.body.decode('utf-8'))
-            event_id = data.get('event_id')
-            quantity = data.get('quantity')
+                    # Use request.body to get raw JSON data
+                    data = json.loads(request.body.decode('utf-8'))
+                    event_id = data.get('event_id')
+                    quantity = data.get('quantity')
 
-            # Retrieve event details
-            event = Event.objects.get(id=event_id)
-            price_per_ticket = event.price_per_ticket
+                    # Retrieve event details
+                    event = Event.objects.get(id=event_id)
+                    price_per_ticket = event.price_per_ticket
 
-            # Calculate total price
-            total_price = quantity * price_per_ticket
+                    # Calculate total price
+                    total_price = quantity * price_per_ticket
 
-            # Create a booking record
-            booking = Booking.objects.create(
-                user=user,
-                event=event,
-                quantity=quantity,
-                price=price_per_ticket,
-                total_price=total_price,
-                status='PENDING',
-                # Add other fields as needed
-            )
+                    # Create a booking record
+                    booking = Booking.objects.create(
+                        user=user,
+                        event=event,
+                        quantity=quantity,
+                        price=price_per_ticket,
+                        total_price=total_price,
+                        status='PENDING',
+                        # Add other fields as needed
+                    )
 
-            # Generate barcode and save image
-            if not booking.barcode:  # Check if barcode is not already generated
-                # Adjust as needed to create a 13-digit code
-                code = f'{event.id:06d}{booking.id:06d}'
+                    # Generate barcode and save image
+                    if not booking.barcode:  # Check if barcode is not already generated
+                        # Adjust as needed to create a 13-digit code
+                        code = f'{event.id:06d}{booking.id:06d}'
 
-                # Ensure the code is exactly 12 digits
-                if len(code) != 12:
-                    raise ValueError("Invalid barcode length")
+                        # Ensure the code is exactly 12 digits
+                        if len(code) != 12:
+                            raise ValueError("Invalid barcode length")
 
-                ean = EAN13(code, writer=ImageWriter())
-                buffer = BytesIO()
-                ean.write(buffer)
+                        ean = EAN13(code, writer=ImageWriter())
+                        buffer = BytesIO()
+                        ean.write(buffer)
 
-                # Save barcode image
-                image_name = f'barcode_{code}.png'
-                booking.barcode_image.save(image_name, File(buffer), save=True)
-                booking.barcode = ean.get_fullcode()
-                booking.save()  # Save the booking to update barcode_number
+                        # Save barcode image
+                        image_name = f'barcode_{code}.png'
+                        booking.barcode_image.save(image_name, File(buffer), save=True)
+                        booking.barcode = ean.get_fullcode()
+                        booking.save()  # Save the booking to update barcode_number
 
-                # Update booked_ticket_quantity in Event
-                event.booked_ticket_quantity += quantity
-                event.save()
+                        # Update booked_ticket_quantity in Event
+                        event.booked_ticket_quantity += quantity
+                        event.save()
 
-                return JsonResponse({'success': True, 'message': 'Booking successful'})
+                        return JsonResponse({'success': True, 'message': 'Booking successful'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Please signin first for booking.'})
 
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})

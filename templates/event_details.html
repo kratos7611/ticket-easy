@@ -161,10 +161,14 @@
                                     <h4>NPR <span>00.00</span></h4>
                                 </div>
                             </div>
-                            <div class="booking-btn">
-                                <button onclick="bookNow()" id="book-now" class="main-btn btn-hover w-100">Book Now
-                                </button>
-                            </div>
+                            {% if not request.user.is_superuser and not request.user.is_organizer%}
+                                <div class="booking-btn">
+                                    <button onclick="bookNow()" id="book-now" class="main-btn btn-hover w-100">Book
+                                        Now
+                                    </button>
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12">

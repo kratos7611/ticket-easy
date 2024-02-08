@@ -4,19 +4,28 @@ import random
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EventForm
 from .models import Event
+from ticketeasy.decorators import onauthenticated_user, path_checker
 
 
+@path_checker
 def dashboard(request):
     context = {
     }
     return render(request, 'dashboard.html', context)
+@path_checker
+def organizer_dashboard(request):
+    context = {
+    }
+    return render(request, 'dashboard.html', context)
 
-
+@login_required(login_url='user:signin')
+@path_checker
 def dashboard_events(request):
     # Get the search query from the form
     search_query = request.GET.get('search', '')
@@ -77,6 +86,8 @@ def explore_events(request):
     return render(request, 'explore_events.html', context)
 
 
+@login_required(login_url='user:signin')
+@path_checker
 def create_event(request):
     show_create_modal = False
     if request.method == 'POST':
@@ -119,6 +130,8 @@ def create_event(request):
     return render(request, 'dashboard_events.html', context)
 
 
+@login_required(login_url='user:signin')
+@path_checker
 def update_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
@@ -178,6 +191,8 @@ def update_event(request, event_id):
     return render(request, 'dashboard_events.html', context)
 
 
+@login_required(login_url='user:signin')
+@path_checker
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     event.delete()
