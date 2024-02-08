@@ -11,6 +11,9 @@ urlpatterns = [
     path('signin/', views.signin, name='signin'),
     path('signout/', views.signout, name='signout'),
     path('superadmin/users', views.dashboard_users, name='dashboard_users'),
+    path('superadmin/create_user', views.create_user, name='create_user'),
+    path('superadmin/update_user/<int:user_id>/', views.update_user, name='update_user'),
+    path('superadmin/delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
 
     path('reset-password/',
          auth_views.PasswordResetView.as_view(

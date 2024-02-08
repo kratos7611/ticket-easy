@@ -67,21 +67,23 @@
                                                         </div>
                                                     </div>
                                                     <div class="dropdown">
-                                                        <button class="option-btn" type="button"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false"><i
-                                                                class="fa-solid fa-ellipsis-vertical"></i></button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a href="{% url 'event:update_event' event_id=event.id %}"
-                                                               class="dropdown-item"><i
-                                                                    class="fas fa-pencil-alt me-3"></i>Edit</a>
+                                                        {% if request.user.is_superuser %}
+                                                            <button class="option-btn" type="button"
+                                                                    data-bs-toggle="dropdown"
+                                                                    aria-haspopup="true" aria-expanded="false"><i
+                                                                    class="fa-solid fa-ellipsis-vertical"></i></button>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a href="{% url 'event:update_event' event_id=event.id %}"
+                                                                   class="dropdown-item"><i
+                                                                        class="fas fa-pencil-alt me-3"></i>Edit</a>
 
-                                                            <a class="dropdown-item delete-event"
-                                                               href="{% url 'event:delete_event' event_id=event.id %}">
-                                                                <i class='fas fa-trash-can me-3'></i>Delete
-                                                            </a>
+                                                                <a class="dropdown-item delete-event"
+                                                                   href="{% url 'event:delete_event' event_id=event.id %}">
+                                                                    <i class='fas fa-trash-can me-3'></i>Delete
+                                                                </a>
 
-                                                        </div>
+                                                            </div>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="bottom d-flex flex-wrap justify-content-start align-items-center p-4">

@@ -2,6 +2,8 @@
 {% url 'user:index' as index %}
 {% url 'user:signin' as signin %}
 {% url 'user:signout' as signout %}
+{% url 'event:dashboard' as dashboard %}
+{% url 'event:organizer_dashboard' as organizer_dashboard %}
 {% url 'event:explore_events' as events %}
 {% block header %}
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -51,12 +53,28 @@
                                 </a>
                             </li>
 
-                            {% if user.is_authenticated %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link " href="#" role="button">
-                                    My Bookings
-                                </a>
-                            </li>
+                            {% if user.is_authenticated and not request.user.is_superuser and not request.user.is_organizer %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link " href="#" role="button">
+                                        My Bookings
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if user.is_authenticated and request.user.is_superuser %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link " href="{{ dashboard }}" role="button">
+                                        Admin Dashboard
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if user.is_authenticated and request.user.is_organizer %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link " href="{{ organizer_dashboard }}" role="button">
+                                        Organizer Dashboard
+                                    </a>
+                                </li>
                             {% endif %}
 
                             <li class="nav-item">
