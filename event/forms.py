@@ -1,9 +1,13 @@
 from django import forms
 from django.forms.widgets import DateTimeInput
 from .models import Event
+from user.models import User
 
 
 class EventForm(forms.ModelForm):
+    organizer = forms.ModelChoiceField(queryset=User.objects.filter(is_organizer=True),
+                                       label='Organizer', empty_label=None)
+
     class Meta:
         model = Event
         fields = [
@@ -17,6 +21,7 @@ class EventForm(forms.ModelForm):
             'issued_ticket_quantity',
             'booked_ticket_quantity',
             'price_per_ticket',
+            'organizer',
         ]
 
         widgets = {
@@ -32,4 +37,14 @@ class EventForm(forms.ModelForm):
             'issued_ticket_quantity': forms.NumberInput(attrs={'class': 'form-control h_40'}),
             'booked_ticket_quantity': forms.NumberInput(attrs={'class': 'form-control h_40'}),
             'price_per_ticket': forms.NumberInput(attrs={'class': 'form-control h_40'}),
+            'organizer': forms.Select(attrs={'class': 'form-control h_40'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['organizer'].widget.attrs['class'] = 'form-control h_40'
+        self.fields['organizer'].label_from_instance = self.label_from_user_instance
+        self.fields['organizer'].choices = [('', 'Select Organizer')] + list(self.fields['organizer'].choices)
+
+    def label_from_user_instance(self, obj):
+        return obj.get_full_name()

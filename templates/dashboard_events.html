@@ -32,7 +32,8 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <input class="form-control h_40" type="text" name="search"
-                                                           placeholder="Search by event name"  value="{{ search_query }}">
+                                                           placeholder="Search by event name"
+                                                           value="{{ search_query }}">
                                                     <button type="submit" class="btn btn-success"><i
                                                             class="uil uil-search"></i> Search
                                                     </button>
@@ -202,6 +203,17 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group mt-4">
+                                        <label class="form-label">Organizer*</label>
+                                        {{ form.organizer }}
+                                        {% if form.organizer.errors %}
+                                            <div class="alert alert-danger mt-2" role="alert">
+                                                {{ form.organizer.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="form-group mt-4">
                                         <label class="form-label">About*</label>
@@ -359,6 +371,18 @@
                                     {% if form.title.errors %}
                                         <div class="alert alert-danger mt-2" role="alert">
                                             {{ form.title.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group mt-4">
+                                    <label class="form-label">Organizer*</label>
+                                    {{ form.organizer }}
+                                    {% if form.organizer.errors %}
+                                        <div class="alert alert-danger mt-2" role="alert">
+                                            {{ form.organizer.errors.0 }}
                                         </div>
                                     {% endif %}
                                 </div>

@@ -1,6 +1,7 @@
 from django.db import models
+from django import forms
 from django.utils import timezone
-
+from user.models import User
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
@@ -14,6 +15,7 @@ class Event(models.Model):
     issued_ticket_quantity = models.PositiveIntegerField(default=1)
     booked_ticket_quantity = models.PositiveIntegerField(default=0, blank=True)
     price_per_ticket = models.DecimalField(max_digits=10, decimal_places=2)
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_events', null=True)
 
     def available_ticket_quantity(self):
         return self.issued_ticket_quantity - self.booked_ticket_quantity
