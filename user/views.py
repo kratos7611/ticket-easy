@@ -111,9 +111,12 @@ def signin(request):
             if user is not None:
                 # Log the user in
                 login(request, user)
-                # Redirect to a success page.
-                # if super admin else index with more menu
-                return redirect('event:dashboard')
+                if user.is_superuser:
+                    return redirect('event:dashboard')
+                elif user.is_organizer:
+                    return redirect('event:organizer_dashboard')
+                else:
+                    return redirect('user:index')
             else:
                 # Return an 'invalid login' error message.
                 messages.error(request, 'Invalid email or password.')
@@ -246,7 +249,7 @@ def update_user(request, user_id):
         users = paginator.get_page(page)
         users.adjusted_elided_pages = paginator.get_elided_page_range(page)
 
-    context = {'form': form, 'user': user,  'users': users, 'show_update_modal': show_update_modal}
+    context = {'form': form, 'user': user, 'users': users, 'show_update_modal': show_update_modal}
     return render(request, 'dashboard_users.html', context)
 
 

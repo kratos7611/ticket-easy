@@ -55,6 +55,35 @@ def dashboard_events(request):
     }
     return render(request, 'dashboard_events.html', context)
 
+@login_required(login_url='user:signin')
+@path_checker
+def organizer_dashboard_events(request):
+    # Get the search query from the form
+    search_query = request.GET.get('search', '')
+
+    # Filter events based on the search query and the current logged-in user
+    if search_query:
+        # Use Q objects to perform a case-insensitive search on the 'title' field
+        filtered_events = Event.objects.filter(
+            Q(title__icontains=search_query) & Q(organizer=request.user)
+        )
+    else:
+        # If no search query, get all events associated with the current user
+        filtered_events = Event.objects.filter(organizer=request.user)
+
+    # Paginate the filtered events
+    paginator = Paginator(filtered_events, 2)
+    page = request.GET.get('page', 1)
+    events = paginator.get_page(page)
+    events.adjusted_elided_pages = paginator.get_elided_page_range(page)
+
+    # Add the search query to the context for displaying in the template
+    context = {
+        'events': events,
+        'search_query': search_query,
+    }
+    return render(request, 'dashboard_events.html', context)
+
 
 def explore_events(request):
     # Get the search query from the form

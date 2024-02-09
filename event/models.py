@@ -29,6 +29,9 @@ class Event(models.Model):
     def month(self):
         return self.start_datetime.strftime('%b')
 
+    def get_organizer_full_name(self):
+        return self.organizer.get_full_name() if self.organizer else ''
+
     @property
     def status(self):
         now = timezone.localtime(timezone.now())
