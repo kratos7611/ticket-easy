@@ -6,21 +6,71 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db import models
+from django.db.models import Q, Sum
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+
 from .forms import EventForm
 from .models import Event
+from booking.models import Booking
 from ticketeasy.decorators import onauthenticated_user, path_checker
 
 
 @path_checker
 def dashboard(request):
+    # Calculate total price sum and total quantity count from the Booking model
+    total_price_sum = Booking.objects.aggregate(total_price_sum=Sum('total_price'))['total_price_sum']
+    total_quantity_count = Booking.objects.aggregate(total_quantity_count=Sum('quantity'))['total_quantity_count']
+
+    # Calculate total active events and total events from the Event model
+    now = timezone.now()
+
+    # Filter active events
+    total_active_events = Event.objects.filter(
+        end_datetime__gt=now, booked_ticket_quantity__lt=models.F('issued_ticket_quantity')
+    ).count()
+
+    total_events = Event.objects.count()
+
     context = {
+        'total_price_sum': total_price_sum,
+        'total_quantity_count': total_quantity_count,
+        'total_active_events': total_active_events,
+        'total_events': total_events,
     }
     return render(request, 'dashboard.html', context)
+
+
+@login_required(login_url='user:signin')
 @path_checker
 def organizer_dashboard(request):
+    organizer = request.user  # Assuming the logged-in user is the organizer
+
+    # Calculate total price sum and total quantity count for the organizer's bookings
+    total_price_sum = Booking.objects.filter(event__organizer=organizer).aggregate(total_price_sum=Sum('total_price'))[
+        'total_price_sum']
+    total_quantity_count = Booking.objects.filter(event__organizer=organizer).aggregate(total_quantity_count=Sum('quantity'))[
+        'total_quantity_count']
+
+    # Calculate total active events and total events organized by the organizer
+    now = timezone.now()
+
+    # Filter active events organized by the organizer
+    total_active_events = Event.objects.filter(
+        organizer=organizer,
+        end_datetime__gt=now,
+        booked_ticket_quantity__lt=models.F('issued_ticket_quantity')
+    ).count()
+
+    # Total events organized by the organizer
+    total_events = Event.objects.filter(organizer=organizer).count()
+
     context = {
+        'total_price_sum': total_price_sum,
+        'total_quantity_count': total_quantity_count,
+        'total_active_events': total_active_events,
+        'total_events': total_events,
     }
     return render(request, 'dashboard.html', context)
 
@@ -54,6 +104,7 @@ def dashboard_events(request):
         'search_query': search_query,
     }
     return render(request, 'dashboard_events.html', context)
+
 
 @login_required(login_url='user:signin')
 @path_checker

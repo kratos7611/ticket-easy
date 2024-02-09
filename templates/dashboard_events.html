@@ -65,7 +65,8 @@
                                                             {% if event.link %}
                                                                 <span class="badge bg-success">Online</span>
                                                             {% endif %}
-                                                             <span style="margin-left:0.5vw"><b>{{ event.get_organizer_full_name }}</b></span>
+                                                            <span style="margin-left:0.5vw"><b>{{ event.get_organizer_full_name }}</b></span>
+                                                            <span style="margin-left:0.5vw">{{ event.commision_percentage }}% Ticket Easy's commision</span>
                                                         </div>
                                                     </div>
                                                     <div class="dropdown">
@@ -302,6 +303,18 @@
                                         {% endif %}
                                     </div>
                                 </div>
+
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group mt-4">
+                                        <label class="form-label">Ticket Easy's Comission(%)*</label>
+                                        {{ form.commision_percentage }}
+                                        {% if form.commision_percentage.errors %}
+                                            <div class="alert alert-danger mt-2" role="alert">
+                                                {{ form.commision_percentage.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
                             <!-- Submit button -->
                             <div class="modal-footer">
@@ -471,6 +484,18 @@
                                     {% if form.price_per_ticket.errors %}
                                         <div class="alert alert-danger mt-2" role="alert">
                                             {{ form.price_per_ticket.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group mt-4">
+                                    <label class="form-label">Ticket Easy's Comission(%)*</label>
+                                    {{ form.commision_percentage }}
+                                    {% if form.commision_percentage.errors %}
+                                        <div class="alert alert-danger mt-2" role="alert">
+                                            {{ form.commision_percentage.errors.0 }}
                                         </div>
                                     {% endif %}
                                 </div>

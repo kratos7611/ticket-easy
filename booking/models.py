@@ -32,3 +32,9 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Booking - {self.event.title}"
+
+    def get_commission_amount(self):
+        return (self.event.commision_percentage / 100) * self.total_price
+
+    def get_commission_percentage(self):
+        return self.event.commision_percentage

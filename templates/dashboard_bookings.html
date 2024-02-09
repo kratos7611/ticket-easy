@@ -56,6 +56,8 @@
                                                         <th scope="col">Price(NPR)</th>
                                                         <th scope="col">Quantity</th>
                                                         <th scope="col">Total(NPR)</th>
+                                                        <th scope="col">Commission(%)</th>
+                                                        <th scope="col">Amount</th>
                                                         <th scope="col">Barcode</th>
                                                         <th scope="col">Status</th>
                                                     </tr>
@@ -70,6 +72,8 @@
                                                             <td>{{ booking.price }}</td>
                                                             <td>{{ booking.quantity }}</td>
                                                             <td>{{ booking.total_price }}</td>
+                                                            <td>{{ booking.get_commission_percentage }}</td>
+                                                            <td>{{ booking.get_commission_amount }}</td>
                                                             <td><img style="width: 150px; height: 75px"
                                                                      src="{{ booking.barcode_image.url }}"
                                                                      alt="Barcode Image"></td>

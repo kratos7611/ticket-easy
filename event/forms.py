@@ -21,6 +21,7 @@ class EventForm(forms.ModelForm):
             'issued_ticket_quantity',
             'booked_ticket_quantity',
             'price_per_ticket',
+            'commision_percentage',
             'organizer',
         ]
 
@@ -37,6 +38,7 @@ class EventForm(forms.ModelForm):
             'issued_ticket_quantity': forms.NumberInput(attrs={'class': 'form-control h_40'}),
             'booked_ticket_quantity': forms.NumberInput(attrs={'class': 'form-control h_40'}),
             'price_per_ticket': forms.NumberInput(attrs={'class': 'form-control h_40'}),
+            'commision_percentage': forms.NumberInput(attrs={'class': 'form-control h_40'}),
             'organizer': forms.Select(attrs={'class': 'form-control h_40'}),
         }
 
