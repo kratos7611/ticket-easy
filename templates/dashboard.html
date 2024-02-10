@@ -4,96 +4,268 @@
 
 {% endblock %}
 {% block content %}
-	<!-- Body Start -->
-	<div class="wrapper wrapper-body">
-		<div class="dashboard-body">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="d-main-title">
-							<h3><i class="fa-solid fa-gauge me-3"></i>Dashboard</h3>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="main-card mt-4">
-							<div class="dashboard-wrap-content">
-								<div class="dashboard-report-content">
-									<div class="row">
-										<div class="col-xl-3 col-lg-6 col-md-6">
-											<div class="dashboard-report-card purple">
-												<div class="card-content">
-													<div class="card-content">
-														<span class="card-title fs-6">Total Revenue (NPR)</span>
-														<span class="card-sub-title fs-3">{{ total_price_sum }}</span>
-														<div class="d-flex align-items-center">
-															<span><i class="fa-solid fa-arrow-trend-up"></i></span>
+    <!-- Body Start -->
+    <div class="wrapper wrapper-body">
+        <div class="dashboard-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-main-title">
+                            <h3><i class="fa-solid fa-gauge me-3"></i>Dashboard</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-card mt-4">
+                            <div class="dashboard-wrap-content">
+                                <div class="dashboard-report-content">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-lg-6 col-md-6">
+                                            <div class="dashboard-report-card purple">
+                                                <div class="card-content">
+                                                    <div class="card-content">
+                                                        <span class="card-title fs-6">Total Revenue (NPR)</span>
+                                                        <span class="card-sub-title fs-3">{{ total_price_sum }}</span>
+                                                        <div class="d-flex align-items-center">
+                                                            <span><i class="fa-solid fa-arrow-trend-up"></i></span>
 
-														</div>
-													</div>
-													<div class="card-media">
-														<i class="fa-solid fa-money-bill"></i>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-xl-3 col-lg-6 col-md-6">
-											<div class="dashboard-report-card red">
-												<div class="card-content">
-													<div class="card-content">
-														<span class="card-title fs-6">Total Event</span>
-														<span class="card-sub-title fs-3">{{ total_events }}</span>
-														<div class="d-flex align-items-center">
-															<span><i class="fa-solid fa-arrow-trend-up"></i></span>
-														</div>
-													</div>
-													<div class="card-media">
-														<i class="fa-solid fa-box"></i>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-xl-3 col-lg-6 col-md-6">
-											<div class="dashboard-report-card info">
-												<div class="card-content">
-													<div class="card-content">
-														<span class="card-title fs-6">Active Events</span>
-														<span class="card-sub-title fs-3">{{ total_active_events }}</span>
-														<div class="d-flex align-items-center">
-															<span><i class="fa-solid fa-arrow-trend-up"></i></span>
-														</div>
-													</div>
-													<div class="card-media">
-														<i class="fa-solid fa-eye"></i>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-xl-3 col-lg-6 col-md-6">
-											<div class="dashboard-report-card success">
-												<div class="card-content">
-													<div class="card-content">
-														<span class="card-title fs-6">Ticket Sales</span>
-														<span class="card-sub-title fs-3">{{ total_quantity_count }}</span>
-														<div class="d-flex align-items-center">
-															<span><i class="fa-solid fa-arrow-trend-up"></i></span>
-														</div>
-													</div>
-													<div class="card-media">
-														<i class="fa-solid fa-ticket"></i>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Body End -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-media">
+                                                        <i class="fa-solid fa-money-bill"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 col-md-6">
+                                            <div class="dashboard-report-card red">
+                                                <div class="card-content">
+                                                    <div class="card-content">
+                                                        <span class="card-title fs-6">Total Event</span>
+                                                        <span class="card-sub-title fs-3">{{ total_events }}</span>
+                                                        <div class="d-flex align-items-center">
+                                                            <span><i class="fa-solid fa-arrow-trend-up"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-media">
+                                                        <i class="fa-solid fa-box"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 col-md-6">
+                                            <div class="dashboard-report-card info">
+                                                <div class="card-content">
+                                                    <div class="card-content">
+                                                        <span class="card-title fs-6">Active Events</span>
+                                                        <span class="card-sub-title fs-3">{{ total_active_events }}</span>
+                                                        <div class="d-flex align-items-center">
+                                                            <span><i class="fa-solid fa-arrow-trend-up"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-media">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 col-md-6">
+                                            <div class="dashboard-report-card success">
+                                                <div class="card-content">
+                                                    <div class="card-content">
+                                                        <span class="card-title fs-6">Ticket Sales</span>
+                                                        <span class="card-sub-title fs-3">{{ total_quantity_count }}</span>
+                                                        <div class="d-flex align-items-center">
+                                                            <span><i class="fa-solid fa-arrow-trend-up"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-media">
+                                                        <i class="fa-solid fa-ticket"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated and request.user.is_organizer %}
+                        <div class="col-md-12">
+                            <div class="conversion-setup">
+                                <div class="main-card mt-5">
+                                    <div class="dashboard-wrap-content p-4">
+                                        <div class="">
+                                            <div class="d-main-title">
+                                                <h2>Scan Ticket Info <i class="uil uil-search"></i></h2>
+                                            </div>
+                                            <div class="rs ms-auto mt_r4 mt-4">
+                                                <form id="searchForm">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input class="form-control h_40" type="text" name="search"
+                                                                   placeholder="Enter or scan barcode here..."
+                                                                   value="{{ search_query }}">
+                                                            <button type="submit" class="btn btn-success"><i
+                                                                    class="uil uil-search"></i> Search
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    {% endif %}
+            </div>
+            {% if booking %}
+
+                <div class="justify-content-md-center row mt-4">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="invoice-header justify-content-between">
+                            <div class="invoice-header-logo">
+                                <img src="{% static 'images/dark-logo.svg' %}" alt="invoice-logo">
+                            </div>
+                            <div class="invoice-header-text">
+                                {% if booking.is_barcode_expired %}
+                                     <a href="#" style="color: red" class="download-link">Already Used</a>
+                                {% else %}
+                                    <a href="{% url 'booking:mark_booking_as_used' booking_id=booking.id %}" class="download-link">Mark As Used</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="invoice-body">
+                            <div class="invoice_dts">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2 class="invoice_title">Invoice</h2>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="vhls140">
+                                            <ul>
+                                                <li>
+                                                    <div class="vdt-list">Full
+                                                        Name: {{ booking.user.get_full_name }}</div>
+                                                </li>
+                                                <li>
+                                                    <div class="vdt-list">
+                                                        Email: {{ booking.user.email }}</div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="vhls140">
+                                            <ul>
+                                                <li>
+                                                    <div class="vdt-list">Invoice ID
+                                                        : {{ booking.id }}</div>
+                                                </li>
+                                                <li>
+                                                    <div class="vdt-list">Order Date
+                                                        : {{ booking.created_at }}</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="main-table bt_40">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Event Details</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Unit Price(NPR)</th>
+                                            <th scope="col">Total(NPR)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td><a href="#" target="_blank">{{ booking.event.title }}</a>
+                                            </td>
+                                            <td>
+                                                {% if booking.event.address %}
+                                                    <span class="badge bg-primary">Venue</span>
+                                                {% endif %}
+
+                                                {% if booking.event.link %}
+                                                    <span class="badge bg-success">Online</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ booking.quantity }}</td>
+                                            <td>{{ booking.price }}</td>
+                                            <td>{{ booking.total_price }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1"></td>
+                                            <td colspan="5">
+                                                <div class="user_dt_trans text-end pe-xl-4">
+                                                    <div class="totalinv2">Invoice Total :
+                                                        NPR {{ booking.total_price }}</div>
+                                                    <p>Payment Status: {{ booking.status }}</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="invoice_footer">
+                                <div class="main-card">
+                                    <div class="row g-0">
+                                        <div class="col-lg-7">
+                                            <div class="event-order-dt p-4">
+                                                <div class="event-thumbnail-img">
+                                                    <img src="{{ booking.event.thumbnail_image.url }}"
+                                                         alt="">
+                                                </div>
+                                                <div class="event-order-dt-content">
+                                                    <h5>{{ booking.event.title }}</h5>
+                                                    <span>{{ booking.event.start_datetime }}</span>
+                                                    <div class="buyer-name">{{ booking.user.get_full_name }}</div>
+                                                    <div class="booking-total-tickets">
+                                                        <i class="fa-solid fa-ticket rotate-icon"></i>
+                                                        <span class="booking-count-tickets mx-2">{{ booking.quantity }}</span>x
+                                                        Ticket
+                                                    </div>
+                                                    <div class="booking-total-grand">
+                                                        Total : <span>NPR {{ booking.total_price }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="QR-dt p-4">
+                                                <ul class="QR-counter-type">
+                                                    <li>Barcode</li>
+                                                </ul>
+                                                <div class="QR-scanner">
+                                                    <img src="{{ booking.barcode_image.url }}"
+                                                         style="width: 150px; height: 75px"
+                                                         alt="QR-Ticket-Scanner">
+                                                </div>
+                                                <p>Powered by Ticket Easy</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            {% endif %}
+    <!-- Body End -->
 {% endblock %}
 
 {% block script %}

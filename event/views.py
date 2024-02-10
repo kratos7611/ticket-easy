@@ -20,8 +20,10 @@ from ticketeasy.decorators import onauthenticated_user, path_checker
 @path_checker
 def dashboard(request):
     # Calculate total price sum and total quantity count from the Booking model
-    total_price_sum = Booking.objects.aggregate(total_price_sum=Sum('total_price'))['total_price_sum']
-    total_quantity_count = Booking.objects.aggregate(total_quantity_count=Sum('quantity'))['total_quantity_count']
+    total_price_sum = Booking.objects.exclude(status='CANCELED').aggregate(total_price_sum=Sum('total_price'))[
+        'total_price_sum']
+    total_quantity_count = Booking.objects.exclude(status='CANCELED').aggregate(total_quantity_count=Sum('quantity'))[
+        'total_quantity_count']
 
     # Calculate total active events and total events from the Event model
     now = timezone.now()
@@ -46,12 +48,24 @@ def dashboard(request):
 @path_checker
 def organizer_dashboard(request):
     organizer = request.user  # Assuming the logged-in user is the organizer
+    booking = None
 
-    # Calculate total price sum and total quantity count for the organizer's bookings
-    total_price_sum = Booking.objects.filter(event__organizer=organizer).aggregate(total_price_sum=Sum('total_price'))[
-        'total_price_sum']
-    total_quantity_count = Booking.objects.filter(event__organizer=organizer).aggregate(total_quantity_count=Sum('quantity'))[
-        'total_quantity_count']
+    search_query = request.GET.get('search', '')
+    if search_query:
+        try:
+            booking = Booking.objects.get(barcode=search_query, event__organizer=organizer)
+        except Booking.DoesNotExist:
+            messages.error(request, "Booking not found for the provided barcode")
+
+    # Calculate total price sum excluding canceled bookings
+    total_price_sum = Booking.objects.filter(
+        event__organizer=organizer
+    ).exclude(status='CANCELED').aggregate(total_price_sum=Sum('total_price'))['total_price_sum']
+
+    # Calculate total quantity count excluding canceled bookings
+    total_quantity_count = Booking.objects.filter(
+        event__organizer=organizer
+    ).exclude(status='CANCELED').aggregate(total_quantity_count=Sum('quantity'))['total_quantity_count']
 
     # Calculate total active events and total events organized by the organizer
     now = timezone.now()
@@ -67,12 +81,15 @@ def organizer_dashboard(request):
     total_events = Event.objects.filter(organizer=organizer).count()
 
     context = {
+        'booking': booking,
+        'search_query': search_query,
         'total_price_sum': total_price_sum,
         'total_quantity_count': total_quantity_count,
         'total_active_events': total_active_events,
         'total_events': total_events,
     }
     return render(request, 'dashboard.html', context)
+
 
 @login_required(login_url='user:signin')
 @path_checker

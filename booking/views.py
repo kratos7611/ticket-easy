@@ -103,6 +103,14 @@ def cancel_pending_booking(request, booking_id):
         return redirect('booking:my_bookings')
 
 
+def mark_booking_as_used(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    booking.is_barcode_expired = True
+    booking.save()
+    messages.success(request, 'Booking has been updated successfully.')
+    return redirect('event:organizer_dashboard')
+
+
 def book_now(request):
     if request.method == 'POST':
         try:
