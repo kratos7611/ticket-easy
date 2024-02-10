@@ -5,6 +5,7 @@
 {% url 'event:dashboard' as dashboard %}
 {% url 'event:organizer_dashboard' as organizer_dashboard %}
 {% url 'event:explore_events' as events %}
+{% url 'booking:my_bookings' as my_bookings %}
 {% block header %}
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 {% endblock %}
@@ -55,7 +56,7 @@
 
                             {% if user.is_authenticated and not request.user.is_superuser and not request.user.is_organizer %}
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link " href="#" role="button">
+                                    <a class="nav-link {% if request.path == my_bookings %} active {% endif %}" href="{{ my_bookings }}" role="button">
                                         My Bookings
                                     </a>
                                 </li>

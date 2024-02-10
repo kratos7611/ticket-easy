@@ -1,10 +1,11 @@
 import json
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from event.models import Event
 from .models import Booking
 from barcode import EAN13
@@ -42,6 +43,64 @@ def dashboard_bookings(request):
         'search_query': search_query,
     }
     return render(request, 'dashboard_bookings.html', context)
+
+
+@login_required(login_url='user:signin')
+def my_bookings(request):
+    search_query = request.GET.get('search', '')
+
+    # Filter bookings based on the search query and the logged-in user
+    if search_query:
+        filtered_bookings = Booking.objects.filter(
+            (Q(user=request.user) &
+             (Q(user__first_name__icontains=search_query) |
+              Q(user__middle_name__icontains=search_query) |
+              Q(user__last_name__icontains=search_query)))
+        )
+    else:
+        # If no search query, get bookings only associated with the logged-in user
+        filtered_bookings = Booking.objects.filter(user=request.user)
+
+    # Paginate the filtered bookings
+    paginator = Paginator(filtered_bookings, 4)  # Adjust the number of items per page as needed
+    page = request.GET.get('page', 1)
+    bookings = paginator.get_page(page)
+    bookings.adjusted_elided_pages = paginator.get_elided_page_range(page)
+
+    # Add the search query to the context for displaying in the template
+    context = {
+        'bookings': bookings,
+        'search_query': search_query,
+    }
+    return render(request, 'my_bookings.html', context)
+
+
+@login_required(login_url='user:signin')
+def get_booking_by_id(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    context = {'booking': booking}
+    return render(request, 'invoice.html', context)
+
+
+def cancel_pending_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Check if the booking is pending
+    if booking.status == 'PENDING':
+        event = booking.event
+        quantity = booking.quantity
+        event.booked_ticket_quantity -= quantity
+        event.save()
+
+        # Update booking status to 'CANCELLED'
+        booking.status = 'CANCELED'
+        booking.save()
+
+        messages.success(request, 'Booking canceled successfully.')
+        return redirect('booking:my_bookings')
+    else:
+        messages.error(request, 'Ooops! Booking cancel Failed.')
+        return redirect('booking:my_bookings')
 
 
 def book_now(request):
