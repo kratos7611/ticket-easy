@@ -1,6 +1,8 @@
 import json
+import base64
 
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -13,6 +15,8 @@ from barcode.writer import ImageWriter
 from io import BytesIO
 from django.core.files import File
 from ticketeasy.decorators import onauthenticated_user, path_checker
+
+User = get_user_model()
 
 
 @login_required(login_url='user:signin')
@@ -59,7 +63,7 @@ def my_bookings(request):
         )
     else:
         # If no search query, get bookings only associated with the logged-in user
-        filtered_bookings = Booking.objects.filter(user=request.user)
+        filtered_bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
 
     # Paginate the filtered bookings
     paginator = Paginator(filtered_bookings, 4)  # Adjust the number of items per page as needed
@@ -80,6 +84,25 @@ def get_booking_by_id(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
     context = {'booking': booking}
     return render(request, 'invoice.html', context)
+
+
+@login_required(login_url='user:signin')
+def get_booking_by_id_json(request, booking_id):
+    try:
+        booking = Booking.objects.select_related('user', 'event').get(id=booking_id)
+        booking_data = {
+            'id': booking.id,
+            'user_full_name': booking.user.get_full_name(),
+            'event_title': booking.event.title,
+            'created_at': booking.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Format the datetime as needed
+            'price': booking.price,
+            'quantity': booking.quantity,
+            'total_price': booking.total_price,
+            'status': booking.status,
+        }
+        return JsonResponse(booking_data)
+    except Booking.DoesNotExist:
+        return JsonResponse({'error': 'Booking not found'}, status=404)
 
 
 def cancel_pending_booking(request, booking_id):
@@ -175,3 +198,30 @@ def book_now(request):
             return JsonResponse({'success': False, 'message': str(e)})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+def payment_cancel_url(request):
+    messages.error(request, "Ooops! Payment has been cancelled.")
+    return redirect('booking:my_bookings')
+
+def payment_success_url(request, booking_id):
+    base64_response = request.GET.get('data', '')
+
+    # Decode the Base64 string
+    decoded_bytes = base64.b64decode(base64_response)
+    decoded_string = decoded_bytes.decode('utf-8')
+
+    # Convert the decoded string to a JSON object
+    json_data = json.loads(decoded_string)
+
+    status = json_data.get('status')
+
+    if status == 'COMPLETE':
+        booking = get_object_or_404(Booking, id=booking_id)
+        booking.status = 'COMPLETED'
+        booking.save()
+        messages.success(request, "Payment received successfully.")
+    else:
+        messages.error(request, f"Oops! Payment status put on {status}. Contact support team.")
+
+    return redirect('booking:my_bookings')

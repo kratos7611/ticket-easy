@@ -83,12 +83,14 @@
                                                                 {% endif %}
                                                             </td>
                                                             <td style="display: flex; justify-content: space-between">
-                                                                <a class="invoice-btn" target="_blank"
+                                                                <a class="invoice-btn btn btn-dark" target="_blank"
                                                                    href="{% url 'booking:get_booking_by_id' booking_id=booking.id %}">Invoice</a>
                                                                 {% if booking.status == 'PENDING' %}
-                                                                    <a class="invoice-btn">Pay</a>
                                                                     <a href="{% url 'booking:cancel_pending_booking' booking_id=booking.id %}"
-                                                                       class="invoice-btn cancel-booking">Cancel</a>
+                                                                       class="invoice-btn btn btn-danger cancel-booking">Cancel</a>
+                                                                    <button class="pay-btn btn btn-primary"
+                                                                            data-booking-id="{{ booking.id }}">Pay
+                                                                    </button>
                                                                 {% endif %}
                                                             </td>
                                                         </tr>
@@ -108,16 +110,38 @@
         </div>
     </div>
     <!-- Body End -->
+    <form id="paymentForm" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+        <input type="hidden" id="amount" name="amount" value="">
+        <input type="hidden" id="tax_amount" name="tax_amount" value="">
+        <input type="hidden" id="total_amount" name="total_amount" value="">
+        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="">
+        <input type="hidden" id="product_code" name="product_code" value="EPAYTEST">
+        <input type="hidden" id="product_service_charge" name="product_service_charge" value="0">
+        <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0">
+        <input type="hidden" id="success_url" name="success_url" value="">
+        <input type="hidden" id="failure_url" name="failure_url" value="">
+        <input type="hidden" id="signed_field_names" name="signed_field_names"
+               value="total_amount,transaction_uuid,product_code">
+        <input type="hidden" id="signature" name="signature" value="">
+        <input type="submit" id="payButton" class="invoice-btn btn btn-success" value="Pay" style="display: none">
+    </form>
 {% endblock %}
 
 {% block script %}
     <style>
+        .invoice-btn {
+            color: #FFFFFF !important;
+        }
+
         .invoice-btn:hover {
             cursor: pointer;
             font-weight: bold;
         }
     </style>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(".cancel-booking").click(function (event) {
@@ -137,6 +161,71 @@
                 }
             });
         });
+
+        function handlePaymentButtonClick(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get the booking ID from the button's data attribute
+            var bookingId = event.target.getAttribute('data-booking-id');
+
+            // Send an AJAX request to fetch the booking details
+            fetch(`/bookings/json/${bookingId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(booking => {
+                    // Update the form fields with the booking details
+                    document.getElementById("amount").value = booking.total_price;
+                    document.getElementById("tax_amount").value = calculateTaxAmount(booking.total_price);
+                    document.getElementById("total_amount").value = calculateTotalAmount(booking.total_price);
+                    document.getElementById("transaction_uuid").value = generateUUID();
+
+                    // Calculate the signature
+                    var message = `total_amount=${document.getElementById("total_amount").value},transaction_uuid=${document.getElementById("transaction_uuid").value},product_code=${document.getElementById("product_code").value}`;
+                    var secret = '8gBm/:&EnhH.1/q';
+                    var hash = CryptoJS.HmacSHA256(message, secret);
+                    var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+                    document.getElementById("signature").value = hashInBase64;
+
+                    // Set the success and failure URLs dynamically based on booking ID
+                    document.getElementById("success_url").value = `http://127.0.0.1:8000/booking/payment/success/${bookingId}/`;
+                    document.getElementById("failure_url").value = `http://127.0.0.1:8000/booking/payment/cancel/`;
+
+
+                    // Submit the form
+                    document.getElementById("paymentForm").submit();
+                })
+                .catch(error => {
+                    console.error('Error fetching booking details:', error);
+                });
+        }
+
+        // Attach event listeners to all pay buttons
+        document.querySelectorAll('.pay-btn').forEach(button => {
+            button.addEventListener('click', handlePaymentButtonClick);
+        });
+
+        // Function to calculate tax amount (replace with your logic)
+        function calculateTaxAmount(totalPrice) {
+            return totalPrice * 0.13; // Assuming 13% tax rate
+        }
+
+        // Function to calculate total amount (replace with your logic)
+        function calculateTotalAmount(totalPrice) {
+            return Number(totalPrice) + Number(calculateTaxAmount(totalPrice));
+        }
+
+        // Function to generate UUID (replace with your logic)
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
     </script>
 
 {% endblock %}
